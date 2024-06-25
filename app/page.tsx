@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import UserCard from "./components/UserCard";
 import axios from "axios";
 import { useDebounce } from "use-debounce";
+import Navbar from "./components/Navbar";
 
 export interface User {
   id: number;
@@ -59,7 +60,8 @@ export default function Home() {
   }, [searchValue]);
   return (
     <main className="flex flex-col items-center bg-slate-800 min-h-[100vh]">
-      <h1 className="text-slate-200 pt-10 text-3xl">Here is the list of all the users!</h1>
+      <Navbar/>
+      <h1 className="text-slate-200 pt-10 text-3xl font-semibold">Here is the list of all the users!</h1>
       <input
         type="text"
         placeholder="Search by name, username, or email"
