@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useEffect, useState } from "react";
 import UserCard from "./components/UserCard";
@@ -37,22 +37,22 @@ interface Company {
 }
 
 export default function Home() {
-  const [users, setUsers] = useState<User[]>([])
-  const [loading, setLoading] = useState(false)
-  const [searchTerm, setSearchTerm] = useState("")
-  const [searchValue] = useDebounce(searchTerm, 500)
-  const [error, setError] = useState("")
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchValue] = useDebounce(searchTerm, 500);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const getUsers = async () => {
       setLoading(true);
-      let url
-      if(searchValue){
-        url = `https://jsonplaceholder.typicode.com/users?q=${searchValue}`
+      let url;
+      if (searchValue) {
+        url = `https://jsonplaceholder.typicode.com/users?q=${searchValue}`;
       } else {
-        url = 'https://jsonplaceholder.typicode.com/users'
+        url = "https://jsonplaceholder.typicode.com/users";
       }
-      const res = await axios.get(url)
+      const res = await axios.get(url);
       setUsers(res.data);
     };
     getUsers()
@@ -62,8 +62,10 @@ export default function Home() {
 
   return (
     <main className="flex flex-col items-center bg-slate-800 min-h-[100vh]">
-      <Navbar/>
-      <h1 className="text-slate-200 pt-10 text-xl md:text-4xl font-semibold">Here is the list of all the users!</h1>
+      <Navbar />
+      <h1 className="text-slate-200 pt-10 text-xl md:text-4xl font-semibold">
+        Here is the list of all the users!
+      </h1>
       {/* Search Bar */}
       <input
         type="text"
@@ -75,14 +77,8 @@ export default function Home() {
       {/* User list rendering */}
       {error ? (
         <div className="text-red-500">{error}</div>
-      ):(
-        users.length === 0 ? (
-          <div className="p-3 border-2 border-slate-500 rounded-xl break-words bg-slate-700 text-slate-200">
-            No users to show here!
-          </div>
-        ):(
-          <UserCard users={users} loading={loading}/>
-        )
+      ) : (
+        <UserCard users={users} loading={loading} />
       )}
     </main>
   );
