@@ -4,7 +4,7 @@ import { User } from "../page";
 const UserCard = ({users, loading}:{users: User[], loading: boolean}) => {
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-10 py-10 px-10 w-full h-screen items-center">
+    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-10 py-10 px-10 w-full">
       {loading && users.length === 0 ? (
         <div>Loading...</div>
       ) : (

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import UserCard from "./components/UserCard";
 import axios from "axios";
+import { useDebounce } from "use-debounce";
 
 export interface User {
   id: number;
@@ -35,29 +36,36 @@ interface Company {
 }
 
 export default function Home() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [users, setUsers] = useState<User[]>([])
+  const [loading, setLoading] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [searchValue] = useDebounce(searchTerm, 500)
 
   useEffect(() => {
     const getUsers = async () => {
       setLoading(true);
-      const res = await axios.get("https://jsonplaceholder.typicode.com/users");
+      let url
+      if(searchValue){
+        url = `https://jsonplaceholder.typicode.com/users?q=${searchValue}`
+      } else {
+        url = 'https://jsonplaceholder.typicode.com/users'
+      }
+      const res = await axios.get(url)
       setUsers(res.data);
     };
     getUsers()
       .catch((err) => console.log("An error occured while getting users", err))
       .finally(() => setLoading(false));
-  }, []);
+  }, [searchValue]);
   return (
-    <main className="flex flex-col items-center justify-center bg-slate-800">
+    <main className="flex flex-col items-center bg-slate-800 min-h-[100vh]">
       <h1 className="text-slate-200 pt-10 text-3xl">Here is the list of all the users!</h1>
       <input
         type="text"
         placeholder="Search by name, username, or email"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="mb-4 p-2 mt-8 w-[80%] md:w-[60%] rounded-md border border-gray-300"
+        className="mb-4 p-2 mt-8 w-[80%] md:w-[60%] lg:w-[50%] 2xl:w-[40%] rounded-md border border-gray-300"
       />
       <UserCard users={users} loading={loading}/>
     </main>
