@@ -41,6 +41,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
   const [searchValue] = useDebounce(searchTerm, 500)
+  const [error, setError] = useState("")
 
   useEffect(() => {
     const getUsers = async () => {
@@ -55,7 +56,7 @@ export default function Home() {
       setUsers(res.data);
     };
     getUsers()
-      .catch((err) => console.log("An error occured while getting users", err))
+      .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, [searchValue]);
 
@@ -72,7 +73,17 @@ export default function Home() {
         className="mb-4 p-2 mt-8 w-[80%] md:w-[60%] lg:w-[50%] 2xl:w-[40%] rounded-md border border-gray-300"
       />
       {/* User list rendering */}
-      <UserCard users={users} loading={loading}/>
+      {error ? (
+        <div className="text-red-500">{error}</div>
+      ):(
+        users.length === 0 ? (
+          <div className="p-3 border-2 border-slate-500 rounded-xl break-words bg-slate-700 text-slate-200">
+            No users to show here!
+          </div>
+        ):(
+          <UserCard users={users} loading={loading}/>
+        )
+      )}
     </main>
   );
 }
